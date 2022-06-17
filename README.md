@@ -6,3 +6,9 @@ Currently implemented preprocessing functions:
 2. Calculate Chamfer distance
 3. Create birds eye view image from point cloud
 4. Create range image from point cloud
+
+
+Used the following libraries:
+1. Open3d
+2. pytorch3d
+3. torch-points3d
