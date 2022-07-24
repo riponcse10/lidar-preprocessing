@@ -2,7 +2,7 @@
 
 from pytorch3d.loss import chamfer_distance
 from pytorch3d.io import IO
-from read_point_cloud import read_point_cloud
+from io.read_point_cloud import read_point_cloud
 import torch
 import struct
 import numpy as np

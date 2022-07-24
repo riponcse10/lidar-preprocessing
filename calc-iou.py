@@ -1,4 +1,0 @@
-from pytorch3d.ops import box3d_overlap
-from pytorch3d.ops.iou_box3d import
-# Assume inputs: boxes1 (M, 8, 3) and boxes2 (N, 8, 3)
-intersection_vol, iou_3d = box3d_overal(boxes1, boxes2)
