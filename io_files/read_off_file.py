@@ -1,6 +1,8 @@
 import open3d as o3d
 from pyntcloud import PyntCloud
 
+#We can also use "trimesh" to convert .off and .obj file formats to .ply format
+
 def get_points_array(path):
     my_point_cloud = PyntCloud.from_file(path)
     points = my_point_cloud.points

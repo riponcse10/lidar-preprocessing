@@ -1,6 +1,8 @@
 import numpy as np
 import os
 
+
+# This method reads point cloud data from .bin or .ply files
 def read_point_cloud(filename):
     suffix = os.path.splitext(filename)[1]
     assert suffix in['.bin', '.ply']
