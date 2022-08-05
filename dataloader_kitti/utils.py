@@ -82,7 +82,7 @@ def read_label(file_path):
         rotation_y.append(parts[14])
 
     annotation = {}
-    #annotation['name'] = np.array(names)
+    annotation['name'] = np.array(names)
     annotation['truncated'] = np.array(truncated).astype(np.float)
     annotation['occluded'] = np.array(occluded).astype(np.int)
     annotation['alpha'] = np.array(alpha).astype(np.float)

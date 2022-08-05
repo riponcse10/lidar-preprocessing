@@ -29,7 +29,7 @@ class Dataset3D(Dataset):
 
     def __getitem__(self, item):
         label = read_label(self.label_files[item])
-        point = self.transform(read_points(self.point_files[item]))
+        point = (read_points(self.point_files[item]))
         calib = read_calib(self.calib_files[item])
 
         datapoint = {"point": point, "label": label, "calib": calib}
@@ -40,11 +40,42 @@ class Dataset3D(Dataset):
         return len(self.point_files)
 
 
+def collate(list_data):
+    batched_pts_list, batched_gt_bboxes_list = [], []
+    batched_labels_list, batched_names_list = [], []
+    batched_difficulty_list = []
+    batched_img_list, batched_calib_list = [], []
+
+    for data_dict in list_data:
+        point = data_dict['point']
+        label = data_dict['label']
+        calib = data_dict['calib']
+
+        batched_pts_list.append(torch.from_numpy(point))
+        batched_gt_bboxes_list.append(torch.from_numpy(label['bbox']))
+        batched_labels_list.append(label['name'])
+        # batched_names_list.append(gt_names)  # List(str)
+        # batched_difficulty_list.append(torch.from_numpy(difficulty))
+        # batched_img_list.append(image_info)
+        # batched_calib_list.append(calbi_info)
+
+    rt_data_dict = dict(
+        batched_pts=batched_pts_list,
+        batched_gt_bboxes=batched_gt_bboxes_list,
+        batched_labels=batched_labels_list
+        # batched_names=batched_names_list,
+        # batched_difficulty=batched_difficulty_list,
+        # batched_img_info=batched_img_list,
+        # batched_calib_info=batched_calib_list
+    )
+
+    return rt_data_dict
+
 root = "/media/ripon/Windows4/Users/ahrip/Documents/linux-soft/Kitti"
 split = "training"
 
 dataset = Dataset3D(root, split)
-dataloader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=True)
+dataloader = torch.utils.data.DataLoader(dataset, batch_size=2, shuffle=True, collate_fn=collate)
 
 for data in dataloader:
     print(data)
