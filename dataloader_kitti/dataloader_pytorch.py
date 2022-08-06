@@ -4,7 +4,7 @@ import torch.utils.data
 from torch.utils.data import Dataset
 from torchvision.transforms import transforms
 
-from utils import read_calib, read_label, read_points
+from utils import read_calib, read_label, read_points, bbox_camera2lidar
 
 
 class Dataset3D(Dataset):
@@ -51,9 +51,13 @@ def collate(list_data):
         label = data_dict['label']
         calib = data_dict['calib']
 
+        tr_velo2cam = calib['Tr_velo_to_cam']
+        r0_rect = calib['R0_rect']
+
         batched_pts_list.append(torch.from_numpy(point))
-        batched_gt_bboxes_list.append(torch.from_numpy(label['bbox']))
+        batched_gt_bboxes_list.append(torch.from_numpy(bbox_camera2lidar(label['bbox'], tr_velo2cam, r0_rect)))
         batched_labels_list.append(label['name'])
+        # batched_calib_list.append(torch.from_numpy(tr_velo2cam))
         # batched_names_list.append(gt_names)  # List(str)
         # batched_difficulty_list.append(torch.from_numpy(difficulty))
         # batched_img_list.append(image_info)
@@ -62,7 +66,8 @@ def collate(list_data):
     rt_data_dict = dict(
         batched_pts=batched_pts_list,
         batched_gt_bboxes=batched_gt_bboxes_list,
-        batched_labels=batched_labels_list
+        batched_labels=batched_labels_list,
+        # batched_calib = batched_calib_list
         # batched_names=batched_names_list,
         # batched_difficulty=batched_difficulty_list,
         # batched_img_info=batched_img_list,

@@ -64,6 +64,7 @@ def read_calib(file_path, extend_matrix=True):
 
     return calib_dict
 
+
 def read_label(file_path):
     with open(file_path, 'r') as f:
         lines = f.readlines()
@@ -93,6 +94,8 @@ def read_label(file_path):
 
     return annotation
 
+
+#This function just transforms the coordinates of bboxes from camera coordinate to lidar coordinate
 def bbox_camera2lidar(bboxes, tr_velo2cam, r0_rect):
     x_size, y_size, z_size = bboxes[:, 3:4], bboxes[:, 4:5], bboxes[:, 5:6]
     xyz_size = np.concatenate([x_size, y_size, z_size], axis=1)
@@ -137,4 +140,5 @@ def bbox3d2corners(bboxes):
 
     # 3. translate to centers
     bboxes_corners += centers[:, None, :]
+
     return bboxes_corners
